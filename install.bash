@@ -1,5 +1,5 @@
 #!/bin/bash
-# linux lnmp安装脚本centos5.8 php版本:php-5.3.10
+# linux lnmp安装脚本centos5.8 php版本:php-5.3.28
 # script name: installsoft.bash
 # version: 1.0
 
@@ -10,139 +10,139 @@ inip=`ifconfig eth1 | grep 'inet addr' | cut -d: -f2 | cut -d' ' -f1`
 
 function wgetsoft()
 {
-     url="
-        http://cn.php.net/get/php-5.3.10.tar.gz/from/a/mirror
-        http://blog.s135.com/soft/linux/nginx_php/libiconv/libiconv-1.13.1.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/mcrypt/libmcrypt-2.5.8.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/mcrypt/mcrypt-2.6.8.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/memcache/memcache-2.2.5.tgz
-        http://blog.s135.com/soft/linux/nginx_php/mhash/mhash-0.9.9.9.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/pcre/pcre-8.10.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/eaccelerator/eaccelerator-0.9.6.1.tar.bz2
-        http://blog.s135.com/soft/linux/nginx_php/pdo/PDO_MYSQL-1.0.2.tgz
-        http://blog.s135.com/soft/linux/nginx_php/imagick/ImageMagick.tar.gz
-        http://blog.s135.com/soft/linux/nginx_php/imagick/imagick-2.3.0.tgz
-        http://monkey.org/~provos/libevent-1.4.14b-stable.tar.gz
-        http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
-        http://www.nginx.org/download/nginx-1.0.12.tar.gz
-        http://mirror.csclub.uwaterloo.ca/mysql/Downloads/MySQL-5.5/mysql-5.5.20-linux2.6-x86_64.tar.gz
-        http://launchpadlibrarian.net/75887410/libmemcached-0.51.tar.gz http://pecl.php.net/get/memcached-1.0.2.tgz
-     "
-     for i in $url
-     do
-          if wget $i -P $softpath; then
-               :
-          else
-               return 1
-          fi
-     done
-     return 0
+	url="
+	http://jp1.php.net/get/php-5.3.28.tar.gz/from/this/mirror
+	http://blog.s135.com/soft/linux/nginx_php/libiconv/libiconv-1.13.1.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/mcrypt/libmcrypt-2.5.8.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/mcrypt/mcrypt-2.6.8.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/memcache/memcache-2.2.5.tgz
+	http://blog.s135.com/soft/linux/nginx_php/mhash/mhash-0.9.9.9.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/pcre/pcre-8.10.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/eaccelerator/eaccelerator-0.9.6.1.tar.bz2
+	http://blog.s135.com/soft/linux/nginx_php/pdo/PDO_MYSQL-1.0.2.tgz
+	http://blog.s135.com/soft/linux/nginx_php/imagick/ImageMagick.tar.gz
+	http://blog.s135.com/soft/linux/nginx_php/imagick/imagick-2.3.0.tgz
+	http://monkey.org/~provos/libevent-1.4.14b-stable.tar.gz
+	http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
+	http://www.nginx.org/download/nginx-1.0.12.tar.gz
+	http://mirror.csclub.uwaterloo.ca/mysql/Downloads/MySQL-5.5/mysql-5.5.34-linux2.6-x86_64.tar.gz
+	http://launchpadlibrarian.net/75887410/libmemcached-0.51.tar.gz http://pecl.php.net/get/memcached-1.0.2.tgz
+	"
+	for i in $url
+	do
+		if wget $i -P $softpath; then
+			:
+		else
+			return 1
+		fi
+	done
+	return 0
 }
 
 function yumsoft()
 {
-     yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2c libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers libevent ImageMagick ImageMagick-devel libevent-devel libxslt-devel
-     if [ $? -eq 0 ]; then
-          return 0
-     else
-          return 1
-     fi
+	yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2c libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers libevent ImageMagick ImageMagick-devel libevent-devel libxslt-devel
+	if [ $? -eq 0 ]; then
+	  return 0
+	else
+	  return 1
+	fi
 }
 
 function libiconv()
 {
-     cd $softpath
-     tar zxf libiconv-1.13.1.tar.gz
-     cd libiconv-1.13.1
-     if ./configure --prefix=/usr/local; then
-          if make && make install; then
-               return 0
-          else
-               return 1
-          fi
-     else
-          return 1
-     fi    
+	cd $softpath
+	tar zxf libiconv-1.13.1.tar.gz
+	cd libiconv-1.13.1
+	if ./configure --prefix=/usr/local; then
+	  if make && make install; then
+		   return 0
+	  else
+		   return 1
+	  fi
+	else
+	  return 1
+	fi    
 }
 
 function libmcrypt()
 {
-    cd $softpath
-    tar zxf libmcrypt-2.5.8.tar.gz
-    cd libmcrypt-2.5.8/
-    if ./configure; then
-         if make && make install; then
-              /sbin/ldconfig
-         else
-              return 1
-         fi
-         cd libltdl/
-         if ./configure --enable-ltdl-install; then
-              if make && make install; then
-                   return 0
-              else
-                   return 1
-              fi
-         else
-              return 1
-         fi
-    else
-         return 1
-    fi
+	cd $softpath
+	tar zxf libmcrypt-2.5.8.tar.gz
+	cd libmcrypt-2.5.8/
+	if ./configure; then
+		if make && make install; then
+			/sbin/ldconfig
+		else
+			return 1
+		fi
+		cd libltdl/
+		if ./configure --enable-ltdl-install; then
+			if make && make install; then
+				return 0
+			else
+				return 1
+			fi
+		else
+			return 1
+		fi
+	else
+		return 1
+	fi
 }
 
 
 function mhash()
 {
-cd $softpath
-tar zxf mhash-0.9.9.9.tar.gz
-cd mhash-0.9.9.9/
-if ./configure; then
-     if make && make install; then
-          return 0
-     else
-          return 1
-     fi
-else
-     return 1
-fi
+	cd $softpath
+	tar zxf mhash-0.9.9.9.tar.gz
+	cd mhash-0.9.9.9/
+	if ./configure; then
+		if make && make install; then
+			return 0
+		else
+			return 1
+		fi
+	else
+		return 1
+	fi
 }
 
 function lnlib()
 {
-src=/usr/local/lib
-dest=/usr/lib
+	src=/usr/local/lib
+	dest=/usr/lib
 
-for i in `ls $src | egrep "libmcrypt.|libmhash.|libmcrypt-config"`
-do
-     ln -s $src/$i $dest/$i
-     if $? -ne 0; then
-          return 1
-     fi
-done
+	for i in `ls $src | egrep "libmcrypt.|libmhash.|libmcrypt-config"`
+	do
+		ln -s $src/$i $dest/$i
+		if $? -ne 0; then
+			return 1
+		fi
+	done
 
-ln -s /lib64/libldap-2.4.so.2.5.6 /usr/lib/libldap.so
-return 0
+	ln -s /lib64/libldap-2.4.so.2.5.6 /usr/lib/libldap.so
+	return 0
 }
 
 function mcrypt()
 {
-cd $softpath
-tar zxf mcrypt-2.6.8.tar.gz
-cd mcrypt-2.6.8/
-if /sbin/ldconfig; then
-     if ./configure; then
-          if make && make install; then
-               return 0
-          else
-               return 1
-          fi
-     else
-          return 1
-     fi
-else
-     return 1
-fi
+	cd $softpath
+	tar zxf mcrypt-2.6.8.tar.gz
+	cd mcrypt-2.6.8/
+	if /sbin/ldconfig; then
+		if ./configure; then
+			if make && make install; then
+				return 0
+			else
+				return 1
+			fi
+		else
+			return 1
+		fi
+	else
+		return 1
+	fi
 }
 
 function installmysql()
@@ -154,8 +154,8 @@ else
 fi
 
 cd $softpath
-tar zxvf mysql-5.5.20-linux2.6-x86_64.tar.gz
-if mv mysql-5.5.20-linux2.6-x86_64 /usr/local/mysql; then
+tar zxvf mysql-5.5.34-linux2.6-x86_64.tar.gz
+if mv mysql-5.5.34-linux2.6-x86_64 /usr/local/mysql; then
      if chown -R mysql:mysql /usr/local/mysql; then
           :
      else
@@ -299,11 +299,11 @@ fi
 function installphp()
 {
 cd $softpath
-tar zxvf php-5.3.10.tar.gz
+tar zxvf php-5.3.28.tar.gz
 if [ $? -ne 0 ]; then
      return 1
 fi
-cd php-5.3.10/
+cd php-5.3.28/
 ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-mysql=/usr/local/mysql --with-mysqli=/usr/local/mysql/bin/mysql_config --with-iconv-dir=/usr/local --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-safe-mode --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --with-curlwrappers --enable-mbregex --enable-fpm --with-fpm-user=nobody --with-fpm-group=nobody --enable-mbstring --with-mcrypt --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-ldap --with-ldap-sasl --with-xmlrpc --enable-zip --enable-soap --with-xsl
 if [ $? -eq 0 ]; then
      make ZEND_EXTRA_LIBS='-liconv' && make install
@@ -325,7 +325,7 @@ fi
 
 function addphpfpmservice()
 {
-     cp /usr/local/src/php-5.3.10/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
+     cp /usr/local/src/php-5.3.28/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
      chmod 0755 /etc/rc.d/init.d/php-fpm
      chown root:root /etc/rc.d/init.d/php-fpm
      chkconfig --add php-fpm
@@ -417,7 +417,7 @@ fi
 
 function PDO_MYSQL()
 {
-cd $softpath/php-5.3.10/ext/pdo_mysql
+cd $softpath/php-5.3.28/ext/pdo_mysql
 if /usr/local/php/bin/phpize; then
      ./configure --with-php-config=/usr/local/php/bin/php-config --with-pdo-mysql=/usr/local/mysql
      if [ $? -eq 0 ]; then
@@ -470,7 +470,7 @@ else
 fi    
 }
 
-function install libmemcached()
+function installlibmemcached()
 {
 cd $softpath
 tar zxvf libmemcached-0.51.tar.gz
@@ -486,7 +486,7 @@ else
 fi
 }
 
-function install memcached()
+function installmemcached()
 {
 cd $softpath
 tar zxvf memcached-1.0.2.tgz
@@ -846,3 +846,4 @@ do
           exit 1
      fi
 done
+
