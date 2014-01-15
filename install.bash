@@ -323,24 +323,6 @@ else
 fi
 }    
 
-function addphpfpmservice()
-{
-     cp /usr/local/src/php-5.3.28/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
-     chmod 0755 /etc/rc.d/init.d/php-fpm
-     chown root:root /etc/rc.d/init.d/php-fpm
-     chkconfig --add php-fpm
-     chkconfig php-fpm on
-}
-
-# by zcx
-function phpfpmconfig()
-{
-    #listen.allowed_clients
-    #listen = 192.168.1.2:9000
-    #pm.max_children = 64
-    service php-fpm start
-}
-
 function libevent()
 {
 cd $softpath
@@ -492,7 +474,7 @@ cd $softpath
 tar zxvf memcached-1.0.2.tgz
 cd memcached-1.0.2
 if /usr/local/php/bin/phpize; then
-   if ./configure --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/libmemcached; then
+   if ./configure --prefix=/usr/local/libmemcached --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/libmemcached; then
        if make && make install; then
             return 0
         else
@@ -822,6 +804,24 @@ else
 fi
 }
 
+function addphpfpmservice()
+{
+     cp /usr/local/src/php-5.3.28/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
+     chmod 0755 /etc/rc.d/init.d/php-fpm
+     chown root:root /etc/rc.d/init.d/php-fpm
+     chkconfig --add php-fpm
+     chkconfig php-fpm on
+}
+
+# by zcx
+function phpfpmconfig()
+{
+    #listen.allowed_clients
+    #listen = 192.168.1.2:9000
+    #pm.max_children = 64
+    service php-fpm start
+}
+
 function path()
 {
 cat >>/root/.bashrc <<Mayday
@@ -830,9 +830,9 @@ cat >>/root/.bashrc <<Mayday
 PATH=/usr/local/nginx/sbin:/usr/local/mysql/bin:/usr/local/mysql/bin:/usr/local/php/bin:/usr/local/php/sbin:\$PATH
 Mayday
 if [ $? -eq 0 ]; then
-     return 0
+    return 0
 else
-     return 1
+    return 1
 fi
 }
 
