@@ -1,6 +1,6 @@
 #!/bin/bash
-# linux lnmp安装脚本centos5.8 php版本:php-5.3.28
-# script name: installsoft.bash
+# linux lnmp安装脚本centos5.8 php版本:php-5.5.18 mysql版本:5.5.18
+# script name: install.bash
 # version: 1.0
 
 softpath=/usr/local/src
@@ -11,7 +11,7 @@ inip=`ifconfig eth1 | grep 'inet addr' | cut -d: -f2 | cut -d' ' -f1`
 function wgetsoft()
 {
 	url="
-	http://php.net/get/php-5.5.20.tar.gz/from/this/mirror
+	http://php.net/get/php-5.5.18.tar.gz/from/this/mirror
 	http://blog.s135.com/soft/linux/nginx_php/libiconv/libiconv-1.13.1.tar.gz
 	http://blog.s135.com/soft/linux/nginx_php/mcrypt/libmcrypt-2.5.8.tar.gz
 	http://blog.s135.com/soft/linux/nginx_php/mcrypt/mcrypt-2.6.8.tar.gz
@@ -24,9 +24,10 @@ function wgetsoft()
 	http://blog.s135.com/soft/linux/nginx_php/imagick/imagick-2.3.0.tgz
 	http://monkey.org/~provos/libevent-1.4.14b-stable.tar.gz
 	http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
-	http://www.nginx.org/download/nginx-1.0.12.tar.gz
-	http://mirror.csclub.uwaterloo.ca/mysql/Downloads/MySQL-5.5/mysql-5.5.34-linux2.6-x86_64.tar.gz
-	http://launchpadlibrarian.net/75887410/libmemcached-0.51.tar.gz http://pecl.php.net/get/memcached-1.0.2.tgz
+	http://www.nginx.org/download/nginx-1.6.1.tar.gz
+	http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.41-linux2.6-x86_64.tar.gz
+	http://launchpadlibrarian.net/75887410/libmemcached-0.51.tar.gz
+	http://pecl.php.net/get/memcached-1.0.2.tgz
 	"
 	for i in $url
 	do
@@ -154,8 +155,8 @@ else
 fi
 
 cd $softpath
-tar zxvf mysql-5.5.34-linux2.6-x86_64.tar.gz
-if mv mysql-5.5.34-linux2.6-x86_64 /usr/local/mysql; then
+tar zxvf mysql-5.5.41-linux2.6-x86_64.tar.gz
+if mv mysql-5.5.41-linux2.6-x86_64 /usr/local/mysql; then
      if chown -R mysql:mysql /usr/local/mysql; then
           :
      else
@@ -299,11 +300,11 @@ fi
 function installphp()
 {
 cd $softpath
-tar zxvf php-5.3.28.tar.gz
+tar zxvf php-5.5.18.tar.gz
 if [ $? -ne 0 ]; then
      return 1
 fi
-cd php-5.3.28/
+cd php-5.5.18/
 ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-mysql=/usr/local/mysql --with-mysqli=/usr/local/mysql/bin/mysql_config --with-iconv-dir=/usr/local --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-safe-mode --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --with-curlwrappers --enable-mbregex --enable-fpm --with-fpm-user=nobody --with-fpm-group=nobody --enable-mbstring --with-mcrypt --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-ldap --with-ldap-sasl --with-xmlrpc --enable-zip --enable-soap --with-xsl
 if [ $? -eq 0 ]; then
      make ZEND_EXTRA_LIBS='-liconv' && make install
@@ -399,7 +400,7 @@ fi
 
 function PDO_MYSQL()
 {
-cd $softpath/php-5.3.28/ext/pdo_mysql
+cd $softpath/php-5.5.18/ext/pdo_mysql
 if /usr/local/php/bin/phpize; then
      ./configure --with-php-config=/usr/local/php/bin/php-config --with-pdo-mysql=/usr/local/mysql
      if [ $? -eq 0 ]; then
@@ -560,8 +561,8 @@ fi
 function nginx()
 {
 cd $softpath
-tar zxvf nginx-1.0.12.tar.gz
-cd nginx-1.0.12/
+tar zxvf nginx-1.6.1.tar.gz
+cd nginx-1.6.1/
 ./configure --user=nobody --group=nobody --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
 if [ $? -eq 0 ]; then
      if make && make install; then
@@ -806,7 +807,7 @@ fi
 
 function addphpfpmservice()
 {
-     cp /usr/local/src/php-5.3.28/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
+     cp /usr/local/src/php-5.5.18/sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
      chmod 0755 /etc/rc.d/init.d/php-fpm
      chown root:root /etc/rc.d/init.d/php-fpm
      chkconfig --add php-fpm
