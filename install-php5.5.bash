@@ -21,13 +21,15 @@ function wgetsoft()
 	http://blog.s135.com/soft/linux/nginx_php/eaccelerator/eaccelerator-0.9.6.1.tar.bz2
 	http://blog.s135.com/soft/linux/nginx_php/pdo/PDO_MYSQL-1.0.2.tgz
 	http://blog.s135.com/soft/linux/nginx_php/imagick/ImageMagick.tar.gz
-	http://blog.s135.com/soft/linux/nginx_php/imagick/imagick-2.3.0.tgz
+	http://blog.s135.com/soft/linux/nginx_php/imagick/imagick-2.3.0.tgz 
+	http://pecl.php.net/get/imagick-3.1.0RC2.tgz
 	http://monkey.org/~provos/libevent-1.4.14b-stable.tar.gz
 	http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz
 	http://www.nginx.org/download/nginx-1.6.1.tar.gz
 	http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.41-linux2.6-x86_64.tar.gz
 	http://launchpadlibrarian.net/75887410/libmemcached-0.51.tar.gz
 	http://pecl.php.net/get/memcached-1.0.2.tgz
+	http://pecl.php.net/get/memcached-2.2.0.tgz
 	"
 	for i in $url
 	do
@@ -435,8 +437,8 @@ fi
 function imagick()
 {
 cd $softpath
-tar zxvf imagick-2.3.0.tgz
-cd imagick-2.3.0/
+tar zxvf imagick-3.1.0RC2.tgz
+cd imagick-3.1.0RC2/
 if /usr/local/php/bin/phpize; then
      ./configure --with-php-config=/usr/local/php/bin/php-config
      if [ $? -eq 0 ]; then
@@ -458,7 +460,7 @@ function installlibmemcached()
 cd $softpath
 tar zxvf libmemcached-0.51.tar.gz
 cd libmemcached-0.51
-if ./configure --with-memcached=/usr/local/memcached/bin/memcached; then
+if ./configure --prefix=/usr/local/libmemcached --with-memcached=/usr/local/memcached/bin/memcached; then
     if make && make install; then
         return 0;
     else
@@ -491,7 +493,7 @@ fi
 
 function sedphpini()
 {
-sed -i 's#extension_dir = "./"#/usr/local/php/lib/php/extensions/no-debug-non-zts-20090626/"\nextension = "memcache.so"\nextension = "pdo_mysql.so"\nextension = "imagick.so"\nextension = "memcached.so"\n#' /usr/local/php/etc/php.ini && sed -i 's#output_buffering = Off#output_buffering = On#' /usr/local/php/etc/php.ini && sed -i "s#;always_populate_raw_post_data = On#always_populate_raw_post_data = On#g" /usr/local/php/etc/php.ini && sed -i "s#;cgi.fix_pathinfo=0#cgi.fix_pathinfo=0#g" /usr/local/php/etc/php.ini
+sed -i 's#extension_dir = "./"#/usr/local/php/lib/php/extensions/no-debug-non-zts-20121212/"\nextension = "memcache.so"\nextension = "pdo_mysql.so"\nextension = "imagick.so"\nextension = "memcached.so"\n#' /usr/local/php/etc/php.ini && sed -i 's#output_buffering = Off#output_buffering = On#' /usr/local/php/etc/php.ini && sed -i "s#;always_populate_raw_post_data = On#always_populate_raw_post_data = On#g" /usr/local/php/etc/php.ini && sed -i "s#;cgi.fix_pathinfo=0#cgi.fix_pathinfo=0#g" /usr/local/php/etc/php.ini
 if [ $? -eq 0 ]; then
      return 0
 else
@@ -505,7 +507,7 @@ mkdir -p /usr/local/eaccelerator_cache && chown -R nobody:nobody /usr/local/eacc
 cat >>/usr/local/php/etc/php.ini <<Mayday
 
 [eaccelerator]
-zend_extension="/usr/local/php/lib/php/extensions/no-debug-non-zts-20090626/eaccelerator.so"
+zend_extension="/usr/local/php/lib/php/extensions/no-debug-non-zts-20121212/eaccelerator.so"
 eaccelerator.shm_size="64"
 eaccelerator.cache_dir="/usr/local/eaccelerator_cache"
 eaccelerator.enable="1"
@@ -827,7 +829,7 @@ function path()
 {
 cat >>/root/.bashrc <<Mayday
 
-# add by jcq
+# add by zcx
 PATH=/usr/local/nginx/sbin:/usr/local/mysql/bin:/usr/local/mysql/bin:/usr/local/php/bin:/usr/local/php/sbin:\$PATH
 Mayday
 if [ $? -eq 0 ]; then
@@ -838,7 +840,7 @@ fi
 }
 
 # yumsoft libiconv libmcrypt mhash lnlib mcrypt installmysql installphp libevent memcached installlibmemcached installmemcached memcache eaccelerator PDO_MYSQL imagick sedphpini configeaccelerator addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice
- for i in yumsoft libiconv libmcrypt mhash lnlib mcrypt installmysql installphp libevent memcached installlibmemcached installmemcached memcache eaccelerator PDO_MYSQL imagick sedphpini configeaccelerator addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
+ for i in yumsoft libiconv libmcrypt mhash lnlib mcrypt installmysql installphp libevent memcached installlibmemcached installmemcached memcache PDO_MYSQL imagick sedphpini addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
 do
      if $i; then
           echo -e "\n$i success\n"
