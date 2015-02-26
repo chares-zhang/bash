@@ -1,0 +1,4 @@
+# 标准时间同步
+30 * * * * /usr/sbin/ntpdate ntp1.aliyun.com
+30 * * * * /usr/sbin/ntpdate stdtime.hichina.com
+
