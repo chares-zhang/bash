@@ -5,7 +5,7 @@
 
 softpath=/usr/local/src
 outip=`ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | cut -d' ' -f1`
-inip=`ifconfig eth1 | grep 'inet addr' | cut -d: -f2 | cut -d' ' -f1`
+inip=`ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | cut -d' ' -f1`
 #innodb_buffer_pool_size='512M'
 
 function wgetsoft()
