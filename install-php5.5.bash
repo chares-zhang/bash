@@ -301,6 +301,7 @@ fi
 
 function installphp()
 {
+cp -frp /usr/lib64/libldap* /usr/lib/
 cd $softpath
 tar zxvf php-5.5.18.tar.gz
 if [ $? -ne 0 ]; then
@@ -474,8 +475,8 @@ fi
 function installmemcached()
 {
 cd $softpath
-tar zxvf memcached-1.0.2.tgz
-cd memcached-1.0.2
+tar zxvf memcached-2.2.0.tgz
+cd memcached-2.2.0
 if /usr/local/php/bin/phpize; then
    if ./configure --prefix=/usr/local/libmemcached --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/libmemcached; then
        if make && make install; then
@@ -840,7 +841,9 @@ fi
 }
 
 # yumsoft libiconv libmcrypt mhash lnlib mcrypt installmysql installphp libevent memcached installlibmemcached installmemcached memcache eaccelerator PDO_MYSQL imagick sedphpini configeaccelerator addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice
- for i in yumsoft libiconv libmcrypt mhash lnlib mcrypt installmysql installphp libevent memcached installlibmemcached installmemcached memcache PDO_MYSQL imagick sedphpini addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
+# for i in installphp libevent memcached installlibmemcached installmemcached memcache PDO_MYSQL imagick sedphpini addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
+# for i in installlibmemcached installmemcached memcache PDO_MYSQL imagick sedphpini addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
+ for i in installlibmemcached installmemcached memcache PDO_MYSQL imagick sedphpini addwww pcre nginx mkdirdata configfcgi confignginx cut_nginx_log addphpfpmservice path
 do
      if $i; then
           echo -e "\n$i success\n"
